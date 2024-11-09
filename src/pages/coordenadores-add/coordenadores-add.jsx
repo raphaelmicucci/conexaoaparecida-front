@@ -42,7 +42,7 @@ function CoordenadoresAdd() {
 
                 <div className="col-12 mt-4">
                     <div className="d-flex justify-content-end">
-                        <Link to="/appointments"
+                        <Link to="/coordenadores"
                             className="btn btn-outline-primary me-3">
                             Cancelar
                         </Link>
