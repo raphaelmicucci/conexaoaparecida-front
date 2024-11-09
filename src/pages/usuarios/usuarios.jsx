@@ -15,7 +15,7 @@ function Usuarios() {
         <div className="d-flex justify-content-between align-items-center">
             <div>
                 <h2 className="d-inline">Usuários</h2>
-                <Link to="/appointments/add"
+                <Link to="/usuarios/add"
                     className="btn btn-outline-primary ms-5 mb-2">
                     Novo Usuário
                 </Link>
