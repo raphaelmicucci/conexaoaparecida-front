@@ -1,6 +1,6 @@
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import Navbar from "../../components/navbar/navbar.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./usuarios.css";
 import API_BASE_URL from "../../config/apiConfig"; // URL da API centralizada
@@ -9,14 +9,14 @@ function Usuarios() {
     const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
     const [loading, setLoading] = useState(true); // Estado para indicar carregamento
     const [error, setError] = useState(null); // Estado para exibir erros
+    const navigate  = useNavigate(); // Hook para navegação
 
     // Função para buscar usuários
     const fetchUsuarios = async () => {
         const token = localStorage.getItem("token"); // Obter o token do localStorage
-
         if (!token) {
-            setError("Token não encontrado. Faça login novamente.");
-            setLoading(false);
+            alert("Token não encontrado. Faça login novamente.");
+            navigate("/");
             return;
         }
 
