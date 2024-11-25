@@ -7,7 +7,7 @@ import API_BASE_URL from "../../config/apiConfig";
 
 
 function Login() {
-    const [username, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null); // Para mostrar erros ao usuário
     const navigate = useNavigate();
@@ -26,6 +26,7 @@ function Login() {
                 const data = await response.json();
                 // Armazene o token ou informações do usuário
                 localStorage.setItem("token", data.accessToken); // Substitua "token" pelo campo correspondente
+                localStorage.setItem("roles", JSON.stringify(data.roles)); // Armazene as roles
                 navigate("/usuarios"); // Redirecione para o dashboard ou página inicial
             } else {
                 const errorData = await response.json();
@@ -55,7 +56,7 @@ function Login() {
                             placeholder="E-mail"
                             className="form-control"
                             value={username}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
                     <div className="mt-2">

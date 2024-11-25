@@ -13,8 +13,9 @@ function Excursoes() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const roles = JSON.parse(localStorage.getItem('roles'));
 
-        if (!token ) {
+        if (!token || !roles || !roles.includes('ROLE_COORDENADOR')) {
             navigate('/login');
         } else {
             fetchTrips(token);
@@ -58,16 +59,26 @@ function Excursoes() {
                             <th>Destino</th>
                             <th>Data</th>
                             <th>Ônibus</th>
-                            <th>Reservas</th>
+                            <th>Lista de Espera</th>
+                            <th>Controles de Presença</th>
                         </tr>
                     </thead>
                     <tbody>
                         {trips.map((trip, id) => (
                             <tr key={id}>
                                 <td>{trip.destination}</td>
-                                <td>{trip.date}</td>
-                                <td>Busids</td> {/* {trip.busIds.join(', ')}*/}
-                                <td>Reservas</td> {/* {trip.reservations.join(', ')}*/}
+                                <td>{trip.data || 'N/A'}</td>
+                                <td>{Array.isArray(trip.onibus) ? trip.onibus.map(bus => bus.plate).join(', ') : 'N/A'}</td>
+                                <td>{Array.isArray(trip.lista_espera) ? trip.lista_espera.map(lista => lista.nome).join(', ') : 'N/A'}</td>
+                                <td>
+                                    {Array.isArray(trip.controles_presenca) ? trip.controles_presenca.map(controle => (
+                                        <div key={controle.id}>
+                                            <div>Tipo: {controle.tipo_chamada}</div>
+                                            <div>Data: {controle.data_chamada}</div>
+                                            <div>Passageiros: {controle.passageiros.map(passageiro => passageiro.nome).join(', ')}</div>
+                                        </div>
+                                    )) : 'N/A'}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

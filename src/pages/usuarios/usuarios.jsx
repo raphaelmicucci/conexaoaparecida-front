@@ -14,9 +14,10 @@ function Usuarios() {
     // Função para buscar usuários
     const fetchUsuarios = async () => {
         const token = localStorage.getItem("token"); // Obter o token do localStorage
-        if (!token) {
+        const roles = JSON.parse(localStorage.getItem("roles")); // Obter as roles do localStorage
+        if (!token || !roles || !roles.includes("ROLE_ADMIN")) {
             alert("Token não encontrado. Faça login novamente.");
-            navigate("/");
+            navigate("/login");
             return;
         }
 
