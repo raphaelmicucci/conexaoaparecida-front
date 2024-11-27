@@ -16,7 +16,6 @@ import Assentos from "./pages/assentos/assentos.jsx";
 import AssentosAdd from "./pages/assentos-add/assentos-add.jsx";
 import Reservas from "./pages/reservas/reservas.jsx";
 import ReservasAdd from "./pages/reservas-add/reservas-add.jsx";
- 
 
 function Rotas() {
     return <BrowserRouter>
@@ -37,8 +36,7 @@ function Rotas() {
             <Route path="/excursoes/edit/:id_appointment" element={<ExcursoesAdd />} />
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/usuarios/add" element={<UsuariosAdd />} />
-            <Route path="/usuarios/edit" element={<UsuariosEdit />} />
-            <Route path="/usuarios/edit/:id_appointment" element={<UsuariosAdd />} />
+            <Route path="/usuarios/edit/:id" element={<UsuariosEdit />} />
             <Route path="/passageiros" element={<Passageiros />} />
             <Route path="/assentos" element={<Assentos />} />
             <Route path="/assentos/add" element={<AssentosAdd />} />
