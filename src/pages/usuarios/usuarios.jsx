@@ -100,7 +100,9 @@ function Usuarios() {
                                     </td>
                                     <td>{usuario.phone}</td>
                                     <td>
-                                        <button className="btn btn-sm btn-primary me-2">Editar</button>
+                                    <Link to="/usuarios/edit" className="btn btn-outline-primary ms-5 mb-2">
+                                     Editar
+                                     </Link>
                                         <button className="btn btn-sm btn-danger">Excluir</button>
                                     </td>
                                 </tr>
