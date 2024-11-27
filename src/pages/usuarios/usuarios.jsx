@@ -2,6 +2,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import Navbar from "../../components/navbar/navbar.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from 'axios';
 import "./usuarios.css";
 import API_BASE_URL from "../../config/apiConfig"; // URL da API centralizada
 
@@ -9,7 +10,7 @@ function Usuarios() {
     const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
     const [loading, setLoading] = useState(true); // Estado para indicar carregamento
     const [error, setError] = useState(null); // Estado para exibir erros
-    const navigate  = useNavigate(); // Hook para navegação
+    const navigate = useNavigate(); // Hook para navegação
 
     // Função para buscar usuários
     const fetchUsuarios = async () => {
@@ -40,6 +41,36 @@ function Usuarios() {
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Função para excluir um usuário
+    const handleDelete = async (userId) => {
+        const token = localStorage.getItem("token"); // Obter o token do localStorage
+        if (!token) {
+            alert("Token não encontrado. Faça login novamente.");
+            navigate("/login");
+            return;
+        }
+
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/api/admin/delete/${userId}`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.status === 200) {
+                // Atualizar a lista de usuários após a exclusão
+                setUsuarios((prevUsuarios) => prevUsuarios.filter(usuario => usuario.id !== userId));
+                alert("Usuário excluído com sucesso.");
+            } else {
+                alert("Erro ao excluir usuário.");
+            }
+        } catch (error) {
+            console.error("Erro ao excluir o usuário:", error);
+            alert("Erro ao excluir usuário.");
         }
     };
 
@@ -100,10 +131,15 @@ function Usuarios() {
                                     </td>
                                     <td>{usuario.phone}</td>
                                     <td>
-                                    <Link to="/usuarios/edit" className="btn btn-outline-primary ms-5 mb-2">
-                                     Editar
-                                     </Link>
-                                        <button className="btn btn-sm btn-danger">Excluir</button>
+                                        <Link to={`/usuarios/edit/${usuario.id}`} className="btn btn-outline-primary ms-5 mb-2">
+                                            Editar
+                                        </Link>
+                                        <button 
+                                            className="btn btn-sm btn-danger" 
+                                            onClick={() => handleDelete(usuario.id)}
+                                        >
+                                            Excluir
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -115,4 +151,4 @@ function Usuarios() {
     );
 }
 
-export default Usuarios;    
+export default Usuarios;
