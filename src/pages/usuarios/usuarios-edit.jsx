@@ -75,29 +75,30 @@ function UsuariosEdit() {
     // Função para enviar os dados do usuário para a API
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const token = localStorage.getItem("token");
         if (!token) {
             alert("Token não encontrado. Faça login novamente.");
             return;
         }
-
+    
         setLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/admin/update/${id}`, {
-                method: "PUT",
+            // Envia a requisição com roles vazias, se não houver seleção
+            const response = await axios.put(`${API_BASE_URL}/api/admin/update/${id}`, {
+                ...form,
+                roles: form.roles.length > 0 ? form.roles : [] // Envia roles vazias se nenhuma for selecionada
+            }, {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json"
-                },
-                body: JSON.stringify(form)
+                }
             });
-
-            if (response.ok) {
+    
+            if (response.status === 200) {
                 navigate("/usuarios"); // Redireciona após sucesso
             } else {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Erro ao atualizar o usuário.");
+                throw new Error("Erro ao atualizar o usuário.");
             }
         } catch (err) {
             console.error("Erro ao atualizar o usuário:", err); // Log para depuração
@@ -106,6 +107,9 @@ function UsuariosEdit() {
             setLoading(false);
         }
     };
+    
+    
+    
 
     const toggleRole = (role) => {
         setForm((prevForm) => ({
