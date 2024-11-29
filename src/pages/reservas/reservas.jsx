@@ -75,7 +75,7 @@ function Reservas() {
                 <td>{reserva.valor}</td>
                 <td>
                   <div className="passengers-list">
-                    {Array.isArray(reserva.passengers) ? reserva.passengers.map(passageiro => (
+                    {Array.isArray(reserva.passageiros) ? reserva.passageiros.map(passageiro => (
                       <div key={passageiro.id} className="passenger-card">
                         <div><strong>Nome:</strong> {passageiro.nome || 'N/A'}</div>
                         <div><strong>RG:</strong> {passageiro.rg || 'N/A'}</div>
