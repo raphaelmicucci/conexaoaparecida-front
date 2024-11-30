@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar/navbar.jsx";
 import { confirmAlert } from "react-confirm-alert";
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import "react-confirm-alert/src/react-confirm-alert.css";
 import "./reservas.css";
 
 function Reservas() {
@@ -11,11 +11,11 @@ function Reservas() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const roles = JSON.parse(localStorage.getItem('roles'));
+    const token = localStorage.getItem("token");
+    const roles = JSON.parse(localStorage.getItem("roles"));
 
-    if (!token || !roles || !roles.includes('ROLE_COORDENADOR')) {
-      navigate('/login');
+    if (!token || !roles || !roles.includes("ROLE_COORDENADOR")) {
+      navigate("/login");
     } else {
       fetchReservas(token);
     }
@@ -23,12 +23,69 @@ function Reservas() {
 
   const fetchReservas = async (token) => {
     try {
-      const response = await axios.get('http://localhost:8080/api/coordenador/reservas', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await axios.get(
+        "http://localhost:8080/api/coordenador/reservas",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setReservas(response.data);
     } catch (error) {
-      console.error('Error fetching reservas:', error);
+      console.error("Erro ao buscar reservas:", error);
+    }
+  };
+
+  const handleDeleteReserva = async (reservaId) => {
+    const token = localStorage.getItem("token");
+    try {
+      await axios.delete(
+        `http://localhost:8080/api/coordenador/reservas/${reservaId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Reserva apagada com sucesso!");
+      setReservas(reservas.filter((reserva) => reserva.id !== reservaId));
+    } catch (error) {
+      console.error("Erro ao apagar reserva:", error);
+      alert("Erro ao apagar reserva.");
+    }
+  };
+
+  const handleDeletePassageiro = async (reservaId, passageiroId) => {
+    const token = localStorage.getItem("token");
+
+    // Localiza a reserva correspondente
+    const reserva = reservas.find((reserva) => reserva.id === reservaId);
+
+    if (!reserva) {
+      alert("Reserva não encontrada.");
+      return;
+    }
+
+    // Remove o passageiro da lista de passageiros
+    const passageirosAtualizados = reserva.passageiros.filter(
+      (p) => p.id !== passageiroId
+    );
+
+    // Atualiza a reserva com a lista de passageiros atualizada
+    const reservaAtualizada = { ...reserva, passageiros: passageirosAtualizados };
+
+    try {
+      // Envia a requisição PUT para atualizar a reserva
+      await axios.put(
+        `http://localhost:8080/api/coordenador/reservas/${reservaId}`,
+        reservaAtualizada,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      alert("Passageiro apagado com sucesso!");
+
+      // Atualiza o estado das reservas
+      setReservas(
+        reservas.map((r) => (r.id === reservaId ? reservaAtualizada : r))
+      );
+    } catch (error) {
+      console.error("Erro ao apagar passageiro:", error);
+      alert("Erro ao apagar passageiro.");
     }
   };
 
@@ -48,7 +105,9 @@ function Reservas() {
               <option value="">Todas as Reservas</option>
             </select>
           </div>
-          <button className="btn btn-primary" type="button">Filtrar</button>
+          <button className="btn btn-primary" type="button">
+            Filtrar
+          </button>
         </div>
       </div>
       <div>
@@ -62,6 +121,7 @@ function Reservas() {
               <th>Status</th>
               <th>Valor</th>
               <th>Passageiros</th>
+              <th className="col-buttons">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -69,21 +129,61 @@ function Reservas() {
               <tr key={id}>
                 <td>{reserva.origem}</td>
                 <td>{reserva.destino}</td>
-                <td>{reserva.data || 'N/A'}</td>
+                <td>{reserva.data || "N/A"}</td>
                 <td>{reserva.onibus}</td>
                 <td>{reserva.status}</td>
                 <td>{reserva.valor}</td>
                 <td>
                   <div className="passengers-list">
-                    {Array.isArray(reserva.passageiros) ? reserva.passageiros.map(passageiro => (
-                      <div key={passageiro.id} className="passenger-card">
-                        <div><strong>Nome:</strong> {passageiro.nome || 'N/A'}</div>
-                        <div><strong>RG:</strong> {passageiro.rg || 'N/A'}</div>
-                        <div><strong>Nascimento:</strong> {passageiro.data_nascimento || 'N/A'}</div>
-                        <div><strong>Telefone:</strong> {passageiro.telefone || 'N/A'}</div>
-                        <div><strong>Email:</strong> {passageiro.email || 'N/A'}</div>
-                      </div>
-                    )) : <div>Nenhum passageiro</div>}
+                    {Array.isArray(reserva.passageiros) ? (
+                      reserva.passageiros.map((passageiro) => (
+                        <div key={passageiro.id} className="passenger-card">
+                          <div>
+                            <strong>Nome:</strong> {passageiro.nome || "N/A"}
+                          </div>
+                          <div>
+                            <strong>RG:</strong> {passageiro.rg || "N/A"}
+                          </div>
+                          <div>
+                            <strong>Nascimento:</strong>{" "}
+                            {passageiro.data_nascimento || "N/A"}
+                          </div>
+                          <div>
+                            <strong>Telefone:</strong>{" "}
+                            {passageiro.telefone || "N/A"}
+                          </div>
+                          <div>
+                            <strong>Email:</strong> {passageiro.email || "N/A"}
+                          </div>
+                          <button
+                            className="btn btn-outline-danger btn-sm mt-2"
+                            onClick={() =>
+                              handleDeletePassageiro(reserva.id, passageiro.id)
+                            }
+                          >
+                            Apagar Passageiro
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <div>Nenhum passageiro</div>
+                    )}
+                  </div>
+                </td>
+                <td>
+                  <div className="d-flex flex-column">
+                    <Link
+                      to={`/reservas/edit/${reserva.id}`}
+                      className="btn btn-outline-primary btn-sm mb-2"
+                    >
+                      Editar
+                    </Link>
+                    <button
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={() => handleDeleteReserva(reserva.id)}
+                    >
+                      Apagar
+                    </button>
                   </div>
                 </td>
               </tr>
