@@ -47,12 +47,18 @@ function ReservasAdd() {
         const { name, value } = e.target;
         setNovoPassageiro({ ...novoPassageiro, [name]: value });
     };
-
+    
     const adicionarPassageiro = () => {
+        const passageiroComId = {
+            ...novoPassageiro,
+            id: crypto.randomUUID(), // Gera um ID único
+        };
+    
         setFormData({
             ...formData,
-            passageiros: [...formData.passageiros, novoPassageiro],
+            passageiros: [...formData.passageiros, passageiroComId],
         });
+    
         setNovoPassageiro({
             nome: "",
             rg: "",
@@ -61,6 +67,7 @@ function ReservasAdd() {
             email: "",
         });
     };
+    
 
     const handleSave = async () => {
     if (!isAuthenticated()) return; // Verifica se está autenticado
