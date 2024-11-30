@@ -80,7 +80,7 @@ function Login() {
 
                     <div>
                         <span className="me-1">Não tenho uma conta.</span>
-                        <Link to="/register">Solicitar agora!</Link>
+                        <Link to="/signup">Solicitar agora!</Link>
                     </div>
                 </form>
             </div>
