@@ -26,7 +26,7 @@ function UsuariosAdd() {
             const token = localStorage.getItem("token");
             if (!token) {
                 alert("Token não encontrado. Faça login novamente.");
-                navigate("/login");
+                navigate("/");
                 return;
             }
 

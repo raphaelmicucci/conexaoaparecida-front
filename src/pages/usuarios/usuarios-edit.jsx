@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from "../../components/navbar/navbar.jsx";
 import API_BASE_URL from "../../config/apiConfig.js"; // URL da API centralizada
@@ -75,30 +75,29 @@ function UsuariosEdit() {
     // Função para enviar os dados do usuário para a API
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         const token = localStorage.getItem("token");
         if (!token) {
             alert("Token não encontrado. Faça login novamente.");
             return;
         }
-    
+
         setLoading(true);
         try {
-            // Envia a requisição com roles vazias, se não houver seleção
-            const response = await axios.put(`${API_BASE_URL}/api/admin/update/${id}`, {
-                ...form,
-                roles: form.roles.length > 0 ? form.roles : [] // Envia roles vazias se nenhuma for selecionada
-            }, {
+            const response = await fetch(`${API_BASE_URL}/api/admin/update/${id}`, {
+                method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json"
-                }
+                },
+                body: JSON.stringify(form)
             });
-    
-            if (response.status === 200) {
+
+            if (response.ok) {
                 navigate("/usuarios"); // Redireciona após sucesso
             } else {
-                throw new Error("Erro ao atualizar o usuário.");
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Erro ao atualizar o usuário.");
             }
         } catch (err) {
             console.error("Erro ao atualizar o usuário:", err); // Log para depuração
@@ -107,9 +106,6 @@ function UsuariosEdit() {
             setLoading(false);
         }
     };
-    
-    
-    
 
     const toggleRole = (role) => {
         setForm((prevForm) => ({
@@ -234,7 +230,9 @@ function UsuariosEdit() {
                         {error && <div className="alert alert-danger">{error}</div>}
 
                         <div className="d-flex justify-content-end">
-                            <button type="button" onClick={resetForm} className="btn btn-secondary me-2">Cancelar</button>
+                            <Link to="/usuarios" className="btn btn-outline-primary me-3">
+                                Cancelar
+                            </Link>
                             <button type="submit" className="btn btn-primary" disabled={loading}>
                                 {loading ? "Salvando..." : "Salvar Dados"}
                             </button>

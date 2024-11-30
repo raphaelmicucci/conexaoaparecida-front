@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Login from "./pages/login/login.jsx";
+import { SignUp } from "./pages/signup/signup.jsx";
 import Register from "./pages/register/register.jsx";
 import Onibus from "./pages/onibus/onibus.jsx";
 import OnibusAdd from "./pages/onibus-add/onibus-add.jsx";
@@ -8,13 +9,9 @@ import OnibusEdit from "./pages/onibus-edit/onibus-edit.jsx";
 import Coordenadores from "./pages/coordenadores/coordenadores.jsx";
 import CoordenadoresAdd from "./pages/coordenadores-add/coordenadores-add.jsx";
 import Excursoes from "./pages/excursoes/excursoes.jsx";
-import ExcursoesAdd from "./pages/excursoes-add/excursoes-add.jsx";
 import Usuarios from "./pages/usuarios/usuarios.jsx";
 import UsuariosAdd from "./pages/usuarios/usuarios-add.jsx";
 import UsuariosEdit from "./pages/usuarios/usuarios-edit.jsx";
-import Passageiros from "./pages/passageiros/passageiros.jsx";
-import Assentos from "./pages/assentos/assentos.jsx";
-import AssentosAdd from "./pages/assentos-add/assentos-add.jsx";
 import Reservas from "./pages/reservas/reservas.jsx";
 import ReservasAdd from "./pages/reservas-add/reservas-add.jsx";
 import ReservasEdit from "./pages/reservas-edit/reservas-edit.jsx";
@@ -23,7 +20,7 @@ function Rotas() {
     return <BrowserRouter>
         <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/reservas" element={<Reservas />} />
             <Route path="/reservas/add" element={<ReservasAdd />} />
             <Route path="/reservas/edit/:id_reserva" element={<ReservasEdit />} />

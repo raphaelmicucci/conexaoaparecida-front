@@ -27,6 +27,7 @@ function Login() {
                 // Armazene o token ou informações do usuário
                 localStorage.setItem("token", data.accessToken); // Substitua "token" pelo campo correspondente
                 localStorage.setItem("roles", JSON.stringify(data.roles)); // Armazene as roles
+                alert("Login com sucesso");
                 navigate("/usuarios"); // Redirecione para o dashboard ou página inicial
             } else {
                 const errorData = await response.json();
@@ -80,7 +81,7 @@ function Login() {
 
                     <div>
                         <span className="me-1">Não tenho uma conta.</span>
-                        <Link to="/register">Solicitar agora!</Link>
+                        <Link to="/signup">Solicitar agora!</Link>
                     </div>
                 </form>
             </div>

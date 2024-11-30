@@ -33,6 +33,11 @@ const NavbarOption = ({ userType }) => {
     </ul>
   );
 };
+const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("roles");
+    navigate("/");
+};
 
 function Navbar() {
     const userType = 'admin'; // Pode ser 'admin', 'secretaria' ou 'coordenador'
@@ -61,7 +66,7 @@ function Navbar() {
                             <ul className="dropdown-menu dropdown-menu-end">
                                 <li><Link className="dropdown-item" to="#">Meu Perfil</Link></li>
                                 <li><hr className="dropdown-divider" /></li>
-                                <li><Link className="dropdown-item" to="/">Desconectar</Link></li>
+                                <li><Link className="dropdown-item" to="/" onClick={handleLogout}>Desconectar</Link></li>
                             </ul>
                         </div>
                     </li>
