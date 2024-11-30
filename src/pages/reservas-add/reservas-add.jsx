@@ -32,7 +32,7 @@ function ReservasAdd() {
         const token = getToken();
         if (!token) {
             alert("Token não encontrado. Faça login novamente.");
-            navigate("/login");
+            navigate("/");
             return false;
         }
         return true;

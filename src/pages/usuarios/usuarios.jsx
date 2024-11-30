@@ -18,7 +18,7 @@ function Usuarios() {
         const roles = JSON.parse(localStorage.getItem("roles")); // Obter as roles do localStorage
         if (!token || !roles || !roles.includes("ROLE_ADMIN")) {
             alert("Token não encontrado. Faça login novamente.");
-            navigate("/login");
+            navigate("/");
             return;
         }
 
@@ -49,7 +49,7 @@ function Usuarios() {
         const token = localStorage.getItem("token"); // Obter o token do localStorage
         if (!token) {
             alert("Token não encontrado. Faça login novamente.");
-            navigate("/login");
+            navigate("/usuarios");
             return;
         }
 

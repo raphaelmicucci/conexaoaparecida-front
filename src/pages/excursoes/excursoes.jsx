@@ -16,7 +16,7 @@ function Excursoes() {
         const roles = JSON.parse(localStorage.getItem('roles'));
 
         if (!token || !roles || !roles.includes('ROLE_COORDENADOR')) {
-            navigate('/login');
+            navigate('/');
         } else {
             fetchTrips(token);
         }

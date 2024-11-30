@@ -36,7 +36,7 @@ const NavbarOption = ({ userType }) => {
 const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("roles");
-    navigate("/login");
+    navigate("/");
 };
 
 function Navbar() {
