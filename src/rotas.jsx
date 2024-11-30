@@ -4,6 +4,7 @@ import Login from "./pages/login/login.jsx";
 import Register from "./pages/register/register.jsx";
 import Onibus from "./pages/onibus/onibus.jsx";
 import OnibusAdd from "./pages/onibus-add/onibus-add.jsx";
+import OnibusEdit from "./pages/onibus-edit/onibus-edit.jsx";
 import Coordenadores from "./pages/coordenadores/coordenadores.jsx";
 import CoordenadoresAdd from "./pages/coordenadores-add/coordenadores-add.jsx";
 import Excursoes from "./pages/excursoes/excursoes.jsx";
@@ -28,20 +29,20 @@ function Rotas() {
             <Route path="/reservas/edit/:id_reserva" element={<ReservasEdit />} />
             <Route path="/onibus" element={<Onibus />} />
             <Route path="/onibus/add" element={<OnibusAdd />} />
-            <Route path="/onibus/edit/:id_appointment" element={<OnibusAdd />} />
+            <Route path="/onibus/edit/:id" element={<OnibusEdit />} />
             <Route path="/coordenadores" element={<Coordenadores />} />
             <Route path="/coordenadores/add" element={<CoordenadoresAdd />} />
-            <Route path="/coordenadores/edit/:id_appointment" element={<CoordenadoresAdd />} />
+            <Route path="/coordenadores/edit/:id" element={<CoordenadoresAdd />} />
             <Route path="/excursoes" element={<Excursoes />} />
             <Route path="/excursoes/add" element={<ExcursoesAdd />} />
-            <Route path="/excursoes/edit/:id_appointment" element={<ExcursoesAdd />} />
+            <Route path="/excursoes/edit/:id" element={<ExcursoesAdd />} />
             <Route path="/usuarios" element={<Usuarios />} />
             <Route path="/usuarios/add" element={<UsuariosAdd />} />
             <Route path="/usuarios/edit/:id" element={<UsuariosEdit />} />
             <Route path="/passageiros" element={<Passageiros />} />
             <Route path="/assentos" element={<Assentos />} />
             <Route path="/assentos/add" element={<AssentosAdd />} />
-            <Route path="/assentos/edit/:id_appointment" element={<AssentosAdd />} />
+            <Route path="/assentos/edit/:id" element={<AssentosAdd />} />
         </Routes>
     </BrowserRouter>
 }

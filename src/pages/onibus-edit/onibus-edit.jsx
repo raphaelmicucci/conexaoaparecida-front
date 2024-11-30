@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/navbar/navbar.jsx";
 
-function OnibusAdd() {
+function OnibusEdit() {
+  const { id } = useParams(); // ID do ônibus vindo da URL
   const navigate = useNavigate();
-
   const [bus, setBus] = useState({
     plate: "",
     model: "",
@@ -13,6 +13,29 @@ function OnibusAdd() {
     driverName: "",
     status: "Disponível",
   });
+
+  const [loading, setLoading] = useState(true);
+
+  // Buscar os dados do ônibus ao carregar a página
+  useEffect(() => {
+    const fetchBus = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/secretaria/onibus/${id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setBus(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Erro ao buscar os dados do ônibus:", error);
+        alert("Erro ao carregar os dados do ônibus.");
+        navigate("/onibus");
+      }
+    };
+
+    fetchBus();
+  }, [id, navigate]);
 
   // Atualizar os dados no estado conforme o usuário altera os campos
   const handleChange = (e) => {
@@ -23,28 +46,34 @@ function OnibusAdd() {
     }));
   };
 
-  // Enviar os dados para o backend ao enviar o formulário
+  // Enviar as alterações para o backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
 
     try {
-      await axios.post("http://localhost:8080/api/secretaria/onibus", bus, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      alert("Ônibus cadastrado com sucesso!");
+      await axios.put(
+        `http://localhost:8080/api/secretaria/onibus/${id}`,
+        bus,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Ônibus atualizado com sucesso!");
       navigate("/onibus"); // Redirecionar para a lista de ônibus
     } catch (error) {
-      console.error("Erro ao cadastrar ônibus:", error);
-      alert("Erro ao cadastrar o ônibus.");
+      console.error("Erro ao atualizar o ônibus:", error);
+      alert("Erro ao atualizar o ônibus.");
     }
   };
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <div className="container-fluid mt-page">
       <Navbar />
       <div className="container mt-5">
-        <h2>Cadastro de Ônibus</h2>
+        <h2>Editar Ônibus</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="plate" className="form-label">
@@ -118,7 +147,7 @@ function OnibusAdd() {
             </select>
           </div>
           <button type="submit" className="btn btn-primary">
-            Salvar
+            Salvar Alterações
           </button>
           <button
             type="button"
@@ -133,4 +162,4 @@ function OnibusAdd() {
   );
 }
 
-export default OnibusAdd;
+export default OnibusEdit;
