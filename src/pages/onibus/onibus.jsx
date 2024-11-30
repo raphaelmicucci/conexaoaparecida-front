@@ -3,7 +3,6 @@ import Navbar from "../../components/navbar/navbar.jsx";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./onibus.css";
 
 function Onibus() {
   const [onibus, setOnibus] = useState([]); // Estado para armazenar os ônibus
