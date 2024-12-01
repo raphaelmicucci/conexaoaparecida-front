@@ -3,6 +3,7 @@ import Navbar from "../../components/navbar/navbar.jsx";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import API_BASE_URL from "../../config/apiConfig";
 
 function Onibus() {
   const [onibus, setOnibus] = useState([]); // Estado para armazenar os ônibus
@@ -12,7 +13,7 @@ function Onibus() {
     const fetchOnibus = async () => {
       const token = localStorage.getItem("token"); // Token de autenticação
       try {
-        const response = await axios.get("http://localhost:8080/api/secretaria/onibus", {
+        const response = await axios.get(`${API_BASE_URL}/api/secretaria/onibus`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -29,7 +30,7 @@ function Onibus() {
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`http://localhost:8080/api/secretaria/onibus/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/secretaria/onibus/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Ônibus excluído com sucesso!");
