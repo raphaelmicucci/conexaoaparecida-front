@@ -5,6 +5,7 @@ import Navbar from "../../components/navbar/navbar.jsx";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "./reservas.css";
+import API_BASE_URL from "../../config/apiConfig";
 
 function Reservas() {
   const [reservas, setReservas] = useState([]);
@@ -24,7 +25,7 @@ function Reservas() {
   const fetchReservas = async (token) => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/coordenador/reservas",
+        `${API_BASE_URL}/api/coordenador/reservas`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -39,7 +40,7 @@ function Reservas() {
     const token = localStorage.getItem("token");
     try {
       await axios.delete(
-        `http://localhost:8080/api/coordenador/reservas/${reservaId}`,
+        `${API_BASE_URL}/api/coordenador/reservas/${reservaId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Reserva apagada com sucesso!");
@@ -72,7 +73,7 @@ function Reservas() {
     try {
       // Envia a requisição PUT para atualizar a reserva
       await axios.put(
-        `http://localhost:8080/api/coordenador/reservas/${reservaId}`,
+        `${API_BASE_URL}/api/coordenador/reservas/${reservaId}`,
         reservaAtualizada,
         { headers: { Authorization: `Bearer ${token}` } }
       );

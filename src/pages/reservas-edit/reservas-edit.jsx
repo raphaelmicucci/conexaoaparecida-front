@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../components/navbar/navbar.jsx";
+import API_BASE_URL from "../../config/apiConfig";
 
 function ReservasEdit() {
   const { id_reserva } = useParams();
@@ -28,7 +29,7 @@ function ReservasEdit() {
   const fetchReserva = async (token) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/coordenador/reservas/${id_reserva}`,
+        `${API_BASE_URL}/api/coordenador/reservas/${id_reserva}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -75,7 +76,7 @@ function ReservasEdit() {
     const token = localStorage.getItem("token");
     try {
       await axios.put(
-        `http://localhost:8080/api/coordenador/reservas/${id_reserva}`,
+        `${API_BASE_URL}/api/coordenador/reservas/${id_reserva}`,
         reserva,
         { headers: { Authorization: `Bearer ${token}` } }
       );

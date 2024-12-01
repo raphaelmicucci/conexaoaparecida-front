@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/navbar/navbar.jsx";
+import API_BASE_URL from "../../config/apiConfig";
 
 function OnibusEdit() {
   const { id } = useParams(); // ID do ônibus vindo da URL
@@ -22,7 +23,7 @@ function OnibusEdit() {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/secretaria/onibus/${id}`,
+          `${API_BASE_URL}/api/secretaria/onibus/${id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setBus(response.data);
@@ -53,7 +54,7 @@ function OnibusEdit() {
 
     try {
       await axios.put(
-        `http://localhost:8080/api/secretaria/onibus/${id}`,
+        `${API_BASE_URL}/api/secretaria/onibus/${id}`,
         bus,
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/navbar/navbar.jsx";
+import API_BASE_URL from "../../config/apiConfig";
 
 function OnibusAdd() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function OnibusAdd() {
     const token = localStorage.getItem("token");
 
     try {
-      await axios.post("http://localhost:8080/api/secretaria/onibus", bus, {
+      await axios.post(`${API_BASE_URL}/api/secretaria/onibus`, bus, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Ônibus cadastrado com sucesso!");
